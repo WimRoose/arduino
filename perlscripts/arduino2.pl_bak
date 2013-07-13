@@ -1,0 +1,52 @@
+#!/usr/bin/perl
+    
+# Set up the serial port
+    use Device::SerialPort;
+    my $port = Device::SerialPort->new("/dev/ttyACM0");
+     
+    # 19200, 81N on the USB ftdi driver
+    $port->baudrate(9600); # you may change this value
+    $port->databits(8); # but not this and the two following
+    $port->parity("none");
+    $port->stopbits(1);
+    $port->read_const_time(2000);
+    $port->read_char_time(2000);
+ #   $port->are_match("\n");
+
+$init=0;
+while ($init == 0)	{
+	
+	my $char = $port->lookfor();
+  
+  
+	#if ($char) {
+        
+	#	print "arduino says -> " . $char . "\n";
+
+	if ($char eq "Arduino ready\r")	 {
+
+		print "arduino says -> " . $char . "\n";
+		$init=1;	
+	
+	}
+}
+
+while (1) {
+
+	$userinput =  <STDIN>;
+	chomp ($userinput);
+	my $count_out = $port->write($userinput);
+	sleep(2);
+    # Poll to see if any data is coming in
+    my $char = $port->lookfor();
+  
+print $char;  
+	if ($char) {
+        
+		print "arduino says -> " . $char . "\n";
+
+	#if ($char eq "Arduinoman is klaar!\r")	 {
+	#}
+	
+ 	}  
+}

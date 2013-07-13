@@ -1,0 +1,21 @@
+#!/bin/bash
+
+while : 
+do
+
+comm=`ps ux | awk '/vlc/ && !/awk/ {print $2}'`
+
+if [[ $comm ]]; then
+                curl -s http://localhost:8080/requests/status.xml | grep now_playing | sed -e 's/.*now_playing..//' -e 's/<\/info>\s*<\/category>//' -e 's/-/:/' > /home/lou/commando
+#echo vlc
+else
+#echo spotify
+home/lou/Ubuntu\ One/arduino/perlscripts/spotifynowplaying > /home/lou/commando
+fi
+
+
+#home/lou/Ubuntu\ One/arduino/perlscripts/spotifynowplaying > /home/lou/commando
+#curl -s http://localhost:8080/requests/status.xml | grep now_playing | sed -e 's/<now_playing><!\[CDATA\[//' -e 's/\]\]><\/now_playing>//' > /home/lou/commando
+#curl -s http://localhost:8080/requests/status.xml | grep now_playing | sed -e 's/.*now_playing..//' -e 's/<\/info>\s*<\/category>//' -e 's/-/:/' > /home/lou/commando
+sleep 15
+done
